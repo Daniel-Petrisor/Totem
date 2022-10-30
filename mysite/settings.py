@@ -20,6 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Production mode
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+SECRET_KEY = config("SECRET_KEY")
+
 ALLOWED_HOSTS = ["64.225.100.221",]
 
 ROOT_URLCONF = f'{config("PROJECT_NAME")}.urls'
