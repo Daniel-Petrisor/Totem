@@ -19,7 +19,7 @@
     <div class="container">
         <div class="row">
             <div class="col-10 mx-auto mt-4">
-              <h1 id="app">{{ text }}</h1>
+              <h1 id="app">{{ text }} !</h1>
               <canvas id="myChart" width="400" height="200"></canvas>
             </div>
         </div>
@@ -67,7 +67,7 @@
       const roomName = window.location.pathname;
       const wsHost = 'ws://'
       + window.location.host
-      + '/ws/graph/'
+      + '/ws/graph/' + ":8001/";
 
       const socket = new WebSocket(wsHost);
       socket.onmessage = function(e){
