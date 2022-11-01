@@ -22,7 +22,7 @@ application = ProtocolTypeRouter({
     # Django's ASGI application to handle traditional HTTP requests
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
-        URLRouter(ws_urlpatterns)),
+                    URLRouter(ws_urlpatterns)),
 })
 
 #  Connection
