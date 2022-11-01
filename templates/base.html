@@ -67,9 +67,9 @@
 
 
       // Correctly decide between ws:// and wss://
-      var ws_graph = '/ws/graph'
+      var ws_graph = '/ws/graph/'
       var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-      var ws_path = ws_scheme + '://' + window.location.host + ":8001/"; // PRODUCTION
+      var ws_path = ws_scheme + '://' + window.location.host + ":8001/ws/graph/"; // PRODUCTION
       // var ws_path = ws_scheme + '://' + window.location.host + "/";
       console.log("Connecting to " + ws_path);
       var socket = new WebSocket(ws_path);
@@ -98,6 +98,10 @@
           graphData.data.datasets[0].data = newGraphData;
           myChart.update();
       }
+
+      socket.onclose = function(e) {
+		      console.error('Socket closed unexpectedly');
+	    };
 
     </script>
   
