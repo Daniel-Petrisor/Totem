@@ -6,6 +6,7 @@ __pycache__
 db.sqlite3
 media
 COMMANDS.md
+PRODUCTION.md
 
 # Backup files # 
 *.bak 
