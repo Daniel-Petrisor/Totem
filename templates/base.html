@@ -74,19 +74,10 @@
       console.log("Connecting to " + ws_path);
       var socket = new WebSocket(ws_path);
 
-
-
-
-
-      // const roomName = window.location.pathname;
-      // const wsHost = 'ws://'
-      // + window.location.host
-      // + '/ws/graph/' + ":8001/";
-
-      // const socket = new WebSocket(wsHost);
-
-
       socket.onmessage = function(e){
+          console.log('onmessage');
+          console.log(e);
+
           var djangoData = JSON.parse(e.data);
           //document.querySelector('#app').innerText = djangoData.value;
           console.log(djangoData);
@@ -98,11 +89,31 @@
           graphData.data.datasets[0].data = newGraphData;
           myChart.update();
       }
+      
 
-      socket.onclose = function(e) {
-		      console.error('Socket closed unexpectedly');
+
+
+      var socket = new WebSocket("wss://35.238.75.46/ws/graph/");
+      // const socket = new WebSocket(wsHost);
+      socket.onopen = function(){
+          console.log('connected');
+          console.log('connected');
+      }
+
+      socket.onmessage = function(e) {
+		      console.error('onmessage');
+          console.log(e);
 	    };
 
+      socket.onclose = function(e) {
+		      console.error('onclose');
+          console.log(e);
+	    };
+
+      socket.onerror = function(e) {
+		      console.error('onerror');
+          console.log(e);
+	    };
     </script>
   
   
