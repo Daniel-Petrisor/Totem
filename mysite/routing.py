@@ -18,7 +18,7 @@ from django.urls import path
 from graph import consumer
 
 websocket_urlPattern=[
-    path('ws/polData/',consumer.DashConsumer),
+    path('ws/graph/',consumer.DashConsumer),
 ]
 
 
