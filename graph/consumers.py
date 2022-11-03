@@ -1,28 +1,41 @@
-import json
-from random import randint
-
-# from time import sleep
-# from channels.generic.websocket import WebsocketConsumer
-
-# class GraphConsumer(WebsocketConsumer):
-#     def connect(self):
-#         self.accept()
-
-#         for i in range(100):
-#             # value >>> main.js file
-#             self.send(json.dumps({'value': randint(100, 120)}))
-#             sleep(1)
-
-
-from asyncio import sleep
 from channels.generic.websocket import AsyncWebsocketConsumer
+import json
 
-class GraphConsumer(AsyncWebsocketConsumer):
+class DashConsumer(AsyncWebsocketConsumer):
+    
     async def connect(self):
+        self.groupname='dashboard'
+        await self.channel_layer.group_add(
+            self.groupname,
+            self.channel_name,
+        )
+
         await self.accept()
 
-        for i in range(100):
-            # value >>> main.js file
-            print(i)
-            await self.send(json.dumps({'value': randint(100, 120)}))
-            await sleep(1)
+    async def disconnect(self,close_code):
+
+        await self.channel_layer.group_discard(
+            self.groupname,
+            self.channel_name
+        )
+    
+
+    async def receive(self, text_data):
+        datapoint = json.loads(text_data)
+        val =datapoint['value']
+
+        await self.channel_layer.group_send(
+            self.groupname,
+            {
+                'type':'deprocessing',
+                'value':val
+            }
+        )
+
+        print ('>>>>',text_data)
+
+        # pass
+
+    async def deprocessing(self,event):
+        valOther=event['value']
+        await self.send(text_data=json.dumps({'value':valOther}))

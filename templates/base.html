@@ -40,49 +40,55 @@
     
     <script type="text/javascript">
       
-      const ctx = document.getElementById('myChart').getContext('2d');
-      var graphData = {
-          type: 'line',
-          data: {
-              labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
-              datasets: [{
-                  label: 'Temperatura',
-                  data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  backgroundColor: [
-                      'rgba(255, 99, 132, 0.5)',
-                  ],
-                
-                  borderWidth: 2
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      }
-      const myChart = new Chart(ctx, graphData);
+      // Correctly decide between ws:// and wss://
+	    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+	    var ws_path = ws_scheme + '://' + window.location.host + ":8001/ws/graph/";       // PRODUCTION
+	    // var ws_path = ws_scheme + '://' + window.location.host + "/";
+	    console.log("Connecting to " + ws_path);
+	  
+      var socket = new WebSocket(ws_path);
 
-      // var ws_path = ws_scheme + '://' + window.location.host + ":8001/"; // PRODUCTION
-      var socket = new WebSocket('ws://127.0.0.1:8000/ws/graph/' + ":8001/");
-      // var socket = new WebSocket('ws://127.0.0.1:8000/ws/graph/');
+
+      socket.onopen =function(e){
+        alert('Connection established');
+      };
 
       socket.onmessage = function(e){
-          var djangoData = JSON.parse(e.data);
-          //document.querySelector('#app').innerText = djangoData.value;
-          console.log(djangoData);
+          console.log(e.data);
+          var recData=JSON.parse(e.data);
+          dataObjNew=dataObj['data']['datasets'][0]['data'];
+          dataObjNew.shift();
+          dataObjNew.push(recData.value);
+          dataObj['data']['datasets'][0]['data']=dataObjNew;
+          window.myLine.update();
 
-          var newGraphData = graphData.data.datasets[0].data;
-          newGraphData.shift();
-          newGraphData.push(djangoData.value);
+      };
 
-          graphData.data.datasets[0].data = newGraphData;
-          myChart.update();
+      socket.onclose = function(e){
+          alert('Connection CLosed');
+      };
 
-          
-      }
+      var dataObj={
+        type: 'line',
+        data: {
+            labels: [1,2,3,4,5,6],
+            datasets: [{
+                label: 'Real time data',
+                data: [12, 19, 3, 5, 2, 3],
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    window.myLine = new Chart(ctx,dataObj );
     </script>
   
   

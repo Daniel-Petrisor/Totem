@@ -14,7 +14,8 @@ from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
-from graph.routing import ws_urlpatterns
+from django.urls import path
+from graph import consumers
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{config("PROJECT_NAME")}.settings')
 
@@ -22,7 +23,10 @@ application = ProtocolTypeRouter({
     # Django's ASGI application to handle traditional HTTP requests
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
-        URLRouter(ws_urlpatterns)),
+            URLRouter([
+                path('ws/graph/', consumers.DashConsumer)
+        ])
+    ),
 })
 
 #  Connection
