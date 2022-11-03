@@ -41,7 +41,7 @@
 
     <script>
 
-        var socket = new WebSocket("wss://35.238.75.46/ws/graph/");
+        var socket = new WebSocket("ws://35.238.75.46:8001/ws/graph/");
         // const socket = new WebSocket(wsHost);
         socket.onopen =function(e){
             alert('Connection established');
