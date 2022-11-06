@@ -23,17 +23,17 @@ class ChatConsumers(WebsocketConsumer):
         self.accept()
         print("connect")
 
-        self.send(text_data=json.dumps({
-            'type': 'connection_enstablished',
-            'message': randint(100, 120)
-        }))
+        # self.send(text_data=json.dumps({
+        #     'type': 'connection_enstablished',
+        #     'message': randint(100, 120)
+        # }))
 
 
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        # message = current_file
+        message = randint(100, 120)
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
