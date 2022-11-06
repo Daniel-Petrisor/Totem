@@ -55,15 +55,15 @@
             let data = JSON.parse(e.data)
             console.log('Data:', data)
 
-            if(data.type === 'chat'){
-                let messages = document.getElementById('messages')
+            // if(data.type === 'chat'){
+            //     let messages = document.getElementById('messages')
 
-                // https://www.youtube.com/watch?v=cw8-KFVXpTE&t=37s
-                // 11.26
-                messages.insertAdjacentHTML('beforeend',`<div>
-                                        <p>${data.message}</p>
-                                        </div>` )
-            }
+            //     // https://www.youtube.com/watch?v=cw8-KFVXpTE&t=37s
+            //     // 11.26
+            //     messages.insertAdjacentHTML('beforeend',`<div>
+            //                             <p>${data.message}</p>
+            //                             </div>` )
+            // }
         }
 
         // let form = document.getElementById('form')

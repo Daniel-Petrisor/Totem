@@ -9,61 +9,70 @@ from asgiref.sync import async_to_sync
 
 # from channels.generic.websocket import AsyncWebsocketConsumer
 
-
-
 class ChatConsumers(WebsocketConsumer):
     def connect(self):
-        self.room_group_name = 'test'
-
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name,
-            self.channel_name
-        )
-
         self.accept()
-        print("connect")
 
-        # self.send(text_data=json.dumps({
-        #     'type': 'connection_enstablished',
-        #     'message': randint(100, 120)
-        # }))
-
-
-
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        message = randint(100, 120)
-
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type':'chat_message',
-                'message': message
-            }
-        )
-        print("receive")
+        for i in range(100):
+            # value >>> main.js file
+            self.send(json.dumps({'value': randint(100, 120)}))
+            sleep(1)
 
 
 
+# class ChatConsumers(WebsocketConsumer):
+#     def connect(self):
+#         self.room_group_name = 'test'
 
-    def chat_message(self, event):
-        message = event['message']
-        # message = current_file
+#         async_to_sync(self.channel_layer.group_add)(
+#             self.room_group_name,
+#             self.channel_name
+#         )
+
+#         self.accept()
+#         print("connect")
+
+#         # self.send(text_data=json.dumps({
+#         #     'type': 'connection_enstablished',
+#         #     'message': randint(100, 120)
+#         # }))
+
+
+
+#     def receive(self, text_data):
+#         text_data_json = json.loads(text_data)
+#         message = text_data_json['message']
+#         # message = randint(100, 120)
+
+#         async_to_sync(self.channel_layer.group_send)(
+#             self.room_group_name,
+#             {
+#                 'type':'chat_message',
+#                 'message': message
+#             }
+#         )
+#         print("receive")
+
+
+
+
+#     def chat_message(self, event):
+#         message = event['message']
+#         # message = current_file
         
-        print('Message', message)
+#         print('Message', message)
 
-        self.send(text_data=json.dumps({
-            'type':'chat',
-            'message': message
-        }))
-        print("chat_message")
+#         self.send(text_data=json.dumps({
+#             'type':'chat',
+#             'message': message
+#         }))
+#         print("chat_message")
 
 
 
-    def disconnect(self, close_code):
-        print("closed")
-        return super().disconnect(close_code)
+#     def disconnect(self, close_code):
+#         print("closed")
+#         return super().disconnect(close_code)
 
 
 # class DashConsumer(AsyncWebsocketConsumer):
