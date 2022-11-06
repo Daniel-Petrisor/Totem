@@ -23,10 +23,10 @@ class ChatConsumers(WebsocketConsumer):
         self.accept()
         print("connect")
 
-        # self.send(text_data=json.dumps({
-        #     'type': 'connection_enstablished',
-        #     'message': current_file
-        # }))
+        self.send(text_data=json.dumps({
+            'type': 'connection_enstablished',
+            'message': randint(100, 120)
+        }))
 
 
 
