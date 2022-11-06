@@ -19,10 +19,15 @@
     <div class="container">
         <div class="row">
             <div class="col-10 mx-auto mt-4">
-              <h1 id="app">{{ text }} !</h1>
-              <canvas id="myChart" width="400" height="200"></canvas>
+              <h1 id="dj">{{ text }}</h1>
+
+              <form id="form">
+                <input type="text" name="message" id="">
+              </form>
+              
+              <div id="messages"></div>
+
             </div>
-            <h3>Mod 1</h3>
         </div>
     </div>
 
@@ -40,60 +45,35 @@
 
 
     <script>
+        let url = `ws://${window.location.host}/ws/socket-server/`
 
-        var socket = new WebSocket("ws://35.238.75.46:8001/ws/graph/");
-        // const socket = new WebSocket(wsHost);
-        socket.onopen =function(e){
-            alert('Connection established');
-            };
+        const chatSocket = new WebSocket(url)
 
-        socket.onmessage = function(e){
-            console.log(e.data);
-            var recData=JSON.parse(e.data);
-            dataObjNew=dataObj['data']['datasets'][0]['data'];
-            dataObjNew.shift();
-            dataObjNew.push(recData.value);
-            dataObj['data']['datasets'][0]['data']=dataObjNew;
-            window.myLine.update();
+        chatSocket.onmessage = function(e){
+            let data = JSON.parse(e.data)
+            console.log('Data:', data)
 
-        };
+            if(data.type === 'chat'){
+                let messages = document.getElementById('messages')
 
-        socket.onclose = function(e){
-            alert('Connection CLosed');
-        };
-
-        socket.onclose = function(e) {
-                console.error('onclose');
-            console.log(e);
-            };
-
-        socket.onerror = function(e) {
-                console.error('onerror');
-            console.log(e);
-            };
-
-
-            var dataObj={
-            type: 'line',
-            data: {
-                labels: [1,2,3,4,5,6],
-                datasets: [{
-                    label: 'Real time data',
-                    data: [12, 19, 3, 5, 2, 3],
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+                // https://www.youtube.com/watch?v=cw8-KFVXpTE&t=37s
+                // 11.26
+                messages.insertAdjacentHTML('beforeend',`<div>
+                                        <p>${data.message}</p>
+                                        </div>` )
             }
         }
-        var ctx = document.getElementById('myChart').getContext('2d');
-        window.myLine = new Chart(ctx,dataObj );
+
+        let form = document.getElementById('form')
+        form.addEventListener('submit', (e)=> {
+            e.preventDefault()
+            
+            let message = e.target.message.value
+            chatSocket.send(JSON.stringify({
+                'message':message
+            }))
+            form.reset()
+        } )
 
     </script>
   
