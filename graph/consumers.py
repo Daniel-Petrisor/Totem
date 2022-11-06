@@ -1,5 +1,13 @@
+import os
+import time
+from time import sleep
+from random import randint
+
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+
+
+
 
 class DashConsumer(AsyncWebsocketConsumer):
     
@@ -11,6 +19,11 @@ class DashConsumer(AsyncWebsocketConsumer):
         )
 
         await self.accept()
+        for i in range(100):
+            # value >>> main.js file
+            self.send(json.dumps({'value': randint(100, 120)}))
+            await sleep(1)
+
 
     async def disconnect(self,close_code):
 
