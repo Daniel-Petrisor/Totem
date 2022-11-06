@@ -66,16 +66,16 @@
             }
         }
 
-        let form = document.getElementById('form')
-        form.addEventListener('submit', (e)=> {
-            e.preventDefault()
+        // let form = document.getElementById('form')
+        // form.addEventListener('submit', (e)=> {
+        //     e.preventDefault()
             
-            let message = e.target.message.value
-            chatSocket.send(JSON.stringify({
-                'message':message
-            }))
-            form.reset()
-        } )
+        //     let message = e.target.message.value
+        //     chatSocket.send(JSON.stringify({
+        //         'message':message
+        //     }))
+        //     form.reset()
+        // } )
 
     </script>
   
